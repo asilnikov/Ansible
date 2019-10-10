@@ -1,0 +1,32 @@
+---
+ - name: Create dir for files check 
+   file:
+     path: /opt/check_system
+     owner: asilnikov
+     group: asilnikov
+     state: directory
+     recurse: yes
+     mode: 0755
+   become: yes
+
+ - name: Check if Nginx Active time
+   shell: | 
+     systemctl status nginx.service | grep Active:
+   register: nginx_active
+   args:
+     warn: false
+
+ - name: Check if Nginx Process Running
+   shell: ps -ef | grep -v grep | grep "nginx. master process"
+   register: nginx_process
+   args:
+     warn: false
+
+ - name: Check if it's really Nginx
+   shell: curl -sIL localhost | grep "^Server. nginx"
+   register: nginx_really
+   args:
+     warn: false
+   notify:
+     - save check nginx
+

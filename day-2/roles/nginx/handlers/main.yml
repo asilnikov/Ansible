@@ -1,0 +1,30 @@
+---
+ - name: save nginx details
+   copy:
+     content: |
+       {
+          "version": "{{ nginx_version.stdout }}",
+          "TLS": "{{ nginx_tls.stdout }}",
+          "installed": "{{ ansible_date_time.iso8601 }}"
+          
+          "repository": {
+             "file": "/etc/yum.repos.d/Nginx.repo",
+             "name": "Nginx/{{ ansible_distribution_major_version }}/{{ ansible_userspace_architecture }}",
+             "description": "Nginx Centos Repo"
+         }, 
+        }
+     dest: /etc/ansible/facts.d/nginx.fact
+   become: yes
+
+ - name: nginx systemd
+   systemd:
+     name: nginx 
+     enabled: yes
+     state: started
+   become: yes
+   
+ - name: nginx systemd reload
+   systemd:
+     name: nginx
+     state: reloaded
+   become: yes  

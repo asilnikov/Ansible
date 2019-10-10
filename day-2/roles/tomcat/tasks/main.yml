@@ -1,0 +1,61 @@
+---
+ - name: Create dir
+   file:
+     path: /opt/tomcat/
+     state: directory
+     mode: 0775
+     recurse: yes
+   become: yes
+  
+ - name: Add group
+   group:
+     name: "{{ tomcat_group }}"
+     state: present 
+   become: yes
+
+ - name: Add user
+   user:
+     name: "{{ tomcat_user }}"
+     group: "{{ tomcat_group }}"
+   become: yes
+     
+ - name: unarchive
+   unarchive:
+     src: "{{ tomcat_url }}"
+     dest: "{{ tomcat_home }}"
+     owner: "{{ tomcat_user }}"
+     group: "{{ tomcat_group }}"
+     remote_src: yes
+   become: yes    
+ 
+ - name: mv and rm
+   shell: 
+     mv "apache-tomcat-{{ tomcat_version }}" "{{ tomcat_version }}"; 
+     rm -f "apache-tomcat-{{ tomcat_version }}.tar.gz"
+   args:
+     chdir: /opt/tomcat/
+   become: yes
+  
+ - name: install TomCat
+   shell: 
+     echo "export CATALINA_HOME='/opt/tomcat/8.5.46'" >> ~/.bashrc; source ~/.bashrc; 
+     sh -c 'chmod +x /opt/tomcat/8.5.46/bin/*.sh' 
+   notify:
+     - save tomcat details
+   become: yes
+
+ - name: Change file owner
+   file:
+     path: /opt/tomcat
+     owner: "{{ tomcat_user }}"
+     group: "{{ tomcat_group }}"
+     recurse: true    
+   become: yes
+
+ - name: Deploy Systemd File
+   template:
+     src: tomcat.service
+     dest: /etc/systemd/system/tomcat.service
+   notify:
+     - enable and started tomcat
+   become: yes

@@ -1,0 +1,8 @@
+---
+ - name: Check Java
+   shell: java -version 2>&1
+   register: java_check
+   notify:
+     - save check java
+#   become: yes
+

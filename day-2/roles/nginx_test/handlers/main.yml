@@ -1,0 +1,19 @@
+---
+ - name: save check nginx
+   copy:
+     content: | 
+       { 
+          
+         "Time": "{{ nginx_active.stdout }}",
+         "Process Running": "{{ nginx_process.stdout }}",
+         "Really Nginx": "{{ nginx_really.stdout }}"
+        
+       }
+     dest: /opt/check_system/nginx.check
+   notify:
+     - debug msg nginx
+   become: yes
+
+ - name: debug msg nginx
+   debug:
+     msg: "Time Run: {{ nginx_active.stdout }}; Process Running: {{ nginx_process.stdout }}; Really Nginx: {{ nginx_really.stdout }}"

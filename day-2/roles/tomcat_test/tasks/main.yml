@@ -1,0 +1,26 @@
+---
+ - name: Check if Tomcat Active time
+   shell: systemctl status tomcat.service | grep "Active:"
+   register: tomcat_active
+   args:
+     warn: false
+
+ - name: Check if Tomcat Process Running
+   shell: ps -eo cmd | grep -v grep | grep "tomcat"
+   register: tomcat_process
+   args:
+     warn: false
+
+ - name: Check if Tomcat Responds 200
+   shell: curl -I -L -s '%{http_code}' http://10.40.1.252/ | grep HTTP
+   register: tomcat_responds
+   args:
+     warn: false
+
+ - name: Check if It's really Tomcat
+   shell: curl -s http://10.40.1.252/ | grep '<title>Apache Tomcat' >/dev/null
+   register: tomcat_really
+   args:
+     warn: false
+   notify:
+     - save check tomcat

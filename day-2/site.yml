@@ -1,0 +1,13 @@
+ - name: Deploy Java
+   hosts: main
+         
+   roles:
+   - java
+   
+ - name: Deploy TomCat
+   hosts: node
+   
+   roles:
+   - java
+   - tomcat  
+   - nginx

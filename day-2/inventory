@@ -1,0 +1,15 @@
+[day2:children]
+main
+node
+
+[day2:vars]
+ansible_user=asilnikov
+ansible_connection=ssh
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_port=22
+
+[main]
+192.168.1.1
+
+[node]
+192.168.1.2

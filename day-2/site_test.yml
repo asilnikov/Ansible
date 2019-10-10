@@ -1,0 +1,17 @@
+- name: Test_main 
+  hosts: 
+    main
+       
+  roles:
+    - java_test
+
+- name: Test_node
+  hosts:
+    node
+
+  roles:
+    - java_test
+    - nginx_test
+    - tomcat_test
+
+    

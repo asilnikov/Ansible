@@ -1,0 +1,5 @@
+---
+#vars:
+#  tomcat_version: 8.5.46
+#  tomcat_home: "/opt/tomcat/{{ tomcat_version }}"
+#  tomcat_url: "https://archive.apache.org/dist/tomcat/tomcat-8/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz"

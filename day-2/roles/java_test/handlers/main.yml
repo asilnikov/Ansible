@@ -1,0 +1,15 @@
+---
+ - name: save check java 
+   copy: 
+     content: >
+        "Java check": "{{ java_check.stdout }}"
+     dest: /opt/check_system/java.check 
+   notify:
+     - debug msg java
+   #become: yes 
+
+ - name: debug msg java   
+   debug:
+     msg: "{{ java_check.stdout }}" 
+
+

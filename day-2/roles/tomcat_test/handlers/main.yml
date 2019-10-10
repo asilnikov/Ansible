@@ -1,0 +1,19 @@
+---
+ - name: save check tomcat
+   copy: 
+     content: |
+       {
+         "Time": "{{ tomcat_active.stdout }}",
+         "Tomcat Responds": "{{ tomcat_responds }}"
+         "Process Running": "{{ tomcat_process.stdout }}",
+         "Really Tomcat": "{{ tomcat_really.stdout }}"
+       }
+     dest: /opt/check_system/tomcat.check
+   notify:
+    - debug msg tomcat
+   become: yes
+
+ - name: debug msg tomcat
+   debug:
+     msg: "Time Run: {{ tomcat_active.stdout }}; Process Running: {{ tomcat_process.stdout }}; Really Nginx: {{ tomcat_really.stdout }}; Tomcat Responds: {{ tomcat_responds.stdout }}"
+        

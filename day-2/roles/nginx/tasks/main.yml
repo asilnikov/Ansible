@@ -1,0 +1,48 @@
+---
+ - name: Add Nginx Repository
+   yum_repository:
+     name: nginx
+     description: Nginx Centos Repo
+     baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+     gpgcheck: no
+     enabled: yes
+   become: yes
+
+ - name: Install Nginx
+   yum:
+     name: nginx
+     state: latest
+   notify:
+     - save nginx details
+   become: yes
+
+ - name: Deploy nginx.conf
+   template:
+     src: nginx.conf
+     dest: /etc/nginx
+     force: yes
+   notify:
+     - nginx systemd 
+   become: yes
+
+ - name: Deploy tomcat.conf
+   template:
+     src: default.conf
+     dest: /etc/nginx/conf.d
+     force: yes
+   notify:
+     - nginx systemd reload
+   become: yes
+ 
+ - name: Get Nginx Version
+   shell: /usr/sbin/nginx -v 2>&1 | awk -F'/' '{print $2}'
+   register: nginx_version
+
+ - name: Get Nginx TLS Settings
+   shell: /usr/sbin/nginx -V 2>&1 | grep TLS
+   register: nginx_tls
+
+ - name: Get Nginx Configured Settings
+   shell: /usr/sbin/nginx -V 2>&1 | grep 'configure arguments' | sed 's/ --/\n--/g' | sed '1d'
+   register: nginx_configure_arguments
+    

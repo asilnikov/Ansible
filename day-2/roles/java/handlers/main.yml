@@ -1,0 +1,17 @@
+
+- name: save java details
+  copy: 
+    content: >
+      {
+
+        "version": "{{ java_version.stdout }}",
+
+        "build": "{{ java_build.stdout }}",
+
+        "installed": "{{ ansible_date_time.stdout }}"
+
+      }
+    dest: /etc/ansible/facts.d/java.fact
+  become: yes
+
+
