@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+config.vm.box = "jasonc/centos7-32bit" 
+config.vm.synced_folder "/src/vagrant/share", "/src/share"
+config.vm.provision "shell", inline: <<-SHELL
+groupadd asilnikov;
+useradd -g asilnikov -m asilnikov;
+echo asilnikov | passwd asilnikov --stdin
+SHELL
+config.vm.define "node" do |n|	
+n.vm.hostname = "node"
+n.vm.network "public_network", ip:"10.40.2.239", bridge: "eth1"
+n.vm.network "private_network", ip:"192.168.2.2"
+n.vm.define "node"
+n.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--usbehci", "off"]
+     vb.customize ["modifyvm", :id, "--cpus", "1"]
+     vb.gui = false
+     vb.memory = "1024"
+     vb.name = "node"
+end
+end
+end

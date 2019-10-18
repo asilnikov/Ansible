@@ -1,0 +1,35 @@
+- name: Test mongodb url
+  hosts: localhost
+  connection: local
+    
+  vars:
+    mongo_src:
+    - linux/mongodb-linux-x86_64-amazon2-debugsymbols-4.2.1
+    - linux/mongodb-linux-x86_64-rhel80-4.2.1
+    - linux/mongodb-linux-x86_64-rhel70-4.2.1
+    - linux/mongodb-linux-x86_64-rhel70-3.4.23
+    - linux/mongodb-linux-x86_64-rhel70-4.2.0
+    - linux/mongodb-linux-x86_64-rhel70-4.0.12 
+    - linux/mongodb-linux-x86_64-rhel62-4.2.1
+    - linux/mongodb-linux-aarch64-ubuntu1804-4.2.1
+    - linux/mongodb-linux-s390x-ubuntu1804-4.2.1
+    - linux/mongodb-linux-x86_64-debian10-4.2.1
+    - linux/mongodb-linux-x86_64-suse15-4.2.1
+    - inux/mongodb-linux-x86_64-ubuntu1204-3.1.0
+
+    mongo_version: "4.2.1"    
+
+    system_info: |
+      OS Name: "{{ ansible_distribution }}"
+      OS Family: "{{ ansible_os_family }}"
+      Version Major Release: "{{ ansible_distribution_major_version }}"
+
+    mongo_url_base: http://downloads.mongodb.org/
+    mongo_url: "{{ mongo_url_base }}{{ mongo_src | get_mongo_src(ansible_distribution, ansible_distribution_major_version, mongo_version) }}.tgz"
+
+  tasks:
+  - debug: var=system_info.split('\n')
+  - debug: var=mongo_url
+
+  - fail: msg="Sorry, there's no mongo distributive found"
+    when: mongo_url | search('nothing found')
