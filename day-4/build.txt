@@ -1,0 +1,52 @@
+{
+  "[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.example:mnt-lab:war:1.0.
+[WARNING] 'version' contains an expression but should be a constant. @ org.example:mnt-lab:1.0.${buildNumber}, /home/asilnikov/cm/ansible/day-4/hello-war/pom.xml, line 7, column 12
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------------------< org.example:mnt-lab >-------------------------
+[INFO] Building mnt-lab Maven Webapp 1.0.
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ mnt-lab ---
+[INFO] Deleting /home/asilnikov/cm/ansible/day-4/hello-war/target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ mnt-lab ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:compile (default-compile) @ mnt-lab ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+[INFO] Compiling 1 source file to /home/asilnikov/cm/ansible/day-4/hello-war/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ mnt-lab ---
+[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory /home/asilnikov/cm/ansible/day-4/hello-war/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.0:testCompile (default-testCompile) @ mnt-lab ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ mnt-lab ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-war-plugin:2.2:war (default-war) @ mnt-lab ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [mnt-lab] in [/home/asilnikov/cm/ansible/day-4/hello-war/target/mnt-lab]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/home/asilnikov/cm/ansible/day-4/hello-war/src/main/webapp]
+[INFO] Webapp assembled in [41 msecs]
+[INFO] Building war: /home/asilnikov/cm/ansible/day-4/hello-war/target/mnt-lab.war
+[INFO] WEB-INF/web.xml already added, skipping
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 3.920 s
+[INFO] Finished at: 2019-10-25T09:10:20+03:00
+[INFO] ------------------------------------------------------------------------"
+{

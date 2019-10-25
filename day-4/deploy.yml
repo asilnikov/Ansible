@@ -1,0 +1,83 @@
+- name: start deploy
+  hosts: localhost
+
+  pre_tasks:
+  - name: Create dir 
+    file: 
+      path: /var/lib/tomcat/webapps/ 
+      state: directory 
+      recurse: yes
+      owner: asilnikov
+      group: asilnikov 
+    become: yes
+    tags:
+      - create
+  
+  
+  vars:
+    path_war: |-
+      hello-war/target/
+    war: 
+      mnt-lab.war  
+
+  tasks:
+  - name: Build time
+    shell: "date"
+    register: time
+
+  - name: Build Machine Name
+    shell: "hostname"
+    register: machine_name
+
+  - name: Build User Name
+    shell: "whoami"
+    register: user_name
+
+  - name: Update file build
+    copy:
+      content: | 
+          Build Time: "{{ time.stdout }}",
+          Build Machine Name: "{{ machine_name.stdout }}",
+          Build User Name: "{{ user_name.stdout }}"
+    
+      dest: hello-war/src/main/resources/build-info.txt
+
+  - name: build
+    shell: "mvn clean package -DbuildNumber=$VERSION"
+    args:
+      chdir: /home/asilnikov/cm/ansible/day-4/hello-war/
+    register: mvn_result
+    tags:
+      - build
+
+  - name: build file
+    copy:
+      content: |-
+        {
+          "{{ mvn_result.stdout }}"
+        {
+      dest: build.txt          
+  
+  - name: deploy
+    deploy_war:
+      url: http://192.168.2.2:8080
+      username: admin
+      password: admin
+      context: /helloworld
+      src: "{{ path_war  }}{{ war  }}"
+    tags:
+      - deploy
+
+#  - name: Check deployment status
+#    uri:  
+#      url: http://192.168.2.2:8080/helloworld/
+#    register: status
+#    failed_when: "'OK' not in status.msg"
+    
+  - name: Update file deploy
+    copy:
+      content: |
+        Deployment time: "{{ time.stdout }}" 
+        Deploy User: "{{ user_name.stdout }}"
+    
+      dest: /var/lib/tomcat/webapps/deploy-info.txt     
